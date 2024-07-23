@@ -1,3 +1,4 @@
+# steps may 1 jump and 2 jump allow 
 # recursion 
 def climbingStairRec(n):
     if n == 1 or n == 2:
@@ -16,7 +17,7 @@ def climbingStairMem(n,mem =None):
     if n in mem:
         return mem[n]
         
-    mem[n] = climbingStairMem(n-1) + climbingStairMem(n-2)
+    mem[n] = climbingStairMem(n-1,mem) + climbingStairMem(n-2,mem)
     return mem[n]   
         
 # tabulation
@@ -33,7 +34,7 @@ def climbingStairTab(n):
     for i in range(3,n+1):
         tab[i] = tab[i-1] + tab[i-2]
         
-    return tab[5]
+    return tab[n]
 n = 5
 print(f'No. of ways in {n} stair is: {climbingStairRec(n)}')
 print(f'No. of ways in {n} stair is: {climbingStairMem(n)}')

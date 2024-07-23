@@ -1,64 +1,27 @@
+# ________ i = 1
+# J = 1 V = 1
+# J = 2 V = 1
+# J = 3 V = 1
+# J = 4 V = 1
 
-def breakPalindrome(palindromeStr):
-    n = len(palindromeStr)
-    
-    if n == 1:
-        return "IMPOSSIBLE"
-    
-    palindrome_list = list(palindromeStr)
-    
-    for i in range(n // 2):
-        if palindrome_list[i] != 'a':
-            palindrome_list[i] = 'a'
-            return "".join(palindrome_list)
-    
-    return "IMPOSSIBLE"
+# ________ i = 2
+# J = 1 V = 2
+# J = 2 V = 2
+# J = 3 V = 2
+
+# ________ i = 3
+# J = 1 V = 3
+# J = 2 V = 3
+# J = 3 V = 3
+# J = 4 V = 3
 
 
+#     0     1       2      3       4
+# 0 [True, False, False, False, False]
+# 1 [True, True,  False, False, False]
+# 2 [True,  ,  True,  True,  False]
+# 3 [True, True,  True,  True,  True ]
 
-
-def getWho(s):
-    vowels = set('aeiou')
-    results = []
-
-    for string in s:
-        vowel_count = sum(1 for char in string if char in vowels)
-        
-        if vowel_count % 2 == 1:
-            results.append("Alex")
-        else:
-            results.append("Chris")
-    
-    return results
-
-# Example usage
-s = ["ljis", "Ihr", "gms"]
-print(getWho(s))  # Output: ["Alex", "Chris", "Chris"]
-
-# ****************************************************************
-
-def getWho(s):
-    vowels = {'a', 'e', 'i', 'o', 'u'}
-    results = []
-    
-    for string in s:
-        count = sum(1 for char in string if char in vowels)
-        if count % 2 == 0:
-            results.append('Alex')
-        else:
-            results.append('Chris')
-    
-    return results
-
-if __name__ == '__main__':
-    import sys
-    input = sys.stdin.read
-    data = input().split()
-    
-    s_count = int(data[0])
-    s = data[1:]
-    
-    result = getWho(s)
-
-    for res in result:
-        print(res)
+# Inputs
+numbers = [1,2,3]
+sum = 4
