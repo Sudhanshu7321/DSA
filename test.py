@@ -1,27 +1,30 @@
-# ________ i = 1
-# J = 1 V = 1
-# J = 2 V = 1
-# J = 3 V = 1
-# J = 4 V = 1
+class Solution:
 
-# ________ i = 2
-# J = 1 V = 2
-# J = 2 V = 2
-# J = 3 V = 2
+    def kPangram(self, string, k):
+        noOfAlpha = len(string) - string.count(' ')
 
-# ________ i = 3
-# J = 1 V = 3
-# J = 2 V = 3
-# J = 3 V = 3
-# J = 4 V = 3
+        # If the number of alphabets in the string is less than 26, it can't be a pangram.
+        if noOfAlpha < 26:
+            return False
 
+        # If k is greater than 25, it means any k distinct alphabets can form a pangram.
+        if k > 25:
+            return True
 
-#     0     1       2      3       4
-# 0 [True, False, False, False, False]
-# 1 [True, True,  False, False, False]
-# 2 [True,  ,  True,  True,  False]
-# 3 [True, True,  True,  True,  True ]
+        # Creating a map to keep track of alphabets present in the string.
+        alphabet_map = [0] * 26
 
-# Inputs
-numbers = [1,2,3]
-sum = 4
+        # Iterating over the string to update the map.
+        for char in string:
+            if char != ' ':
+                alphabet_map[ord(char.lower()) - ord('a')] = 1
+
+        # Counting the number of distinct alphabets present in the string.
+        noOfDistAlpha = alphabet_map.count(1)
+
+        # If the number of distinct alphabets plus k is greater than or equal to 26,
+        # it means k distinct alphabets can be added to the string to form a pangram.
+        if noOfDistAlpha + k >= 26:
+            return True
+        else:
+            return False

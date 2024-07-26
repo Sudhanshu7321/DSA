@@ -138,12 +138,14 @@ class LinkList:
                 nex = curr.next
                 curr.next = pre
                 pre = curr
+                
                 curr = nex
             return pre   
         
         firstHalfHead = self.head
         mid = findMid(self.head)
         secoundHalfHead = reverse(mid)   
+        
         while secoundHalfHead and secoundHalfHead.next:
             if firstHalfHead.data != secoundHalfHead.data:
                 return False

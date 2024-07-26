@@ -31,7 +31,7 @@ for val in values:
 
 # Function to print tree in inorder fashion to verify
 def inorder_traversal(root):
-    if root is not None:
+    if root:
         inorder_traversal(root.left)
         print(root.data, end=' ')
         inorder_traversal(root.right)
