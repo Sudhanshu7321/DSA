@@ -40,6 +40,7 @@ class Graph:
     def dfsDisplay(self, curr, visited=None):
         if visited is None:
             visited = set()
+            
         print(curr)
         visited.add(curr)
         
