@@ -3,96 +3,248 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Feedback Graphs</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
-        body{
-        background: #3399ff;
+        body {
+        font-family: Arial, sans-serif;
         }
 
-.circle{
-position: absolute;
-border-radius: 50%;
-background: white;
-animation: ripple 15s infinite;
-box-shadow: 0px 0px 1px 0px #508fb9;
-}
-
-.small{
-width: 200px;
-height: 200px;
-left: -100px;
-bottom: -100px;
-}
-
-.medium{
-width: 400px;
-height: 400px;
-left: -200px;
-bottom: -200px;
-}
-
-.large{
-width: 600px;
-height: 600px;
-left: -300px;
-bottom: -300px;
-}
-
-.xlarge{
-width: 800px;
-height: 800px;
-left: -400px;
-bottom: -400px;
-}
-
-.xxlarge{
-width: 1000px;
-height: 1000px;
-left: -500px;
-bottom: -500px;
-}
-
-.shade1{
-opacity: 0.2;
-}
-.shade2{
-opacity: 0.5;
-}
-
-.shade3{
-opacity: 0.7;
-}
-
-.shade4{
-opacity: 0.8;
-}
-
-.shade5{
-opacity: 0.9;
-}
-
-@keyframes ripple{
-0%{
-transform: scale(0.8);
-}
-
-50%{
-transform: scale(1.2);
-}
-
-100%{
-transform: scale(0.8);
-}
+        .charts-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-items: center;
         }
-    </style>
+
+        .chart-item {
+        width: 45%;
+        margin-bottom: 50px;
+        }
+
+        .download-btn {
+        display: block;
+        margin: 20px auto;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        }
+
+        .download-btn:hover {
+        background-color: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+        .chart-item {
+        width: 100%;
+        }
+        }
+        </style>
+        </head>
+
+<body>
+    <h2>Feedback Charts</h2>
+
+    <div class="charts-container" id="chartsContainer">
+        <div class="chart-item">
+            <canvas id="timelyCareChartt"></canvas>
+        </div>
+        <div class="chart-item">
+            <canvas id="conductChart"></canvas>
+        </div>
+        <div class="chart-item">
+            <canvas id="testingFacilitiesChart"></canvas>
+        </div>
+        <div class="chart-item">
+            <canvas id="foodQualityChart"></canvas>
+        </div>
+    </div>
+
+    <button class="download-btn" id="downloadPdfBtn">Download PDF</button>
+
+    <script>
+        // Dummy data for the charts
+        const feedbackData = {
+                timelyCare: {
+                    excellent: 14,
+                    veryGood: 18,
+                    good: 9,
+                    satisfactory: 6,
+                    poor: 2
+                },
+
+                conductNursesDoctors: {
+                    excellent: 15,
+                    veryGood: 19,
+                    good: 8,
+                    satisfactory: 4,
+                    poor: 5
+                },
+                testingFacilities: {
+                    excellent: 12,
+                    veryGood: 17,
+                    good: 10,
+                    satisfactory: 8,
+                    poor: 2
+                },
+                foodQuality: {
+                    excellent: 11,
+                    veryGood: 16,
+                    good: 10,
+                    satisfactory: 9,
+                    poor: 3
+                }
+        };
+
+        // Function to create a bar chart
+        function createBarChart(canvasId, label, data) {
+        const ctx = document.getElementById(canvasId).getContext('2d');
+        new Chart(ctx, {
+        type: 'bar',
+        data: {
+        labels: ['Excellent', 'Very Good', 'Good', 'Satisfactory', 'Poor'],
+        datasets: [{
+        label: label,
+        data: data,
+        backgroundColor: [
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 99, 132, 0.2)'
+        ],
+        borderColor: [
+        'rgba(75, 192, 192, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 99, 132, 1)'
+        ],
+        borderWidth: 1
+        }]
+        },
+        options: {
+        scales: {
+        y: {
+        beginAtZero: true
+        }
+        }
+        }
+            });
+            }
+
+        // Creating charts for each feedback category
+        createBarChart('timelyCareChartt', 'Timely Patient Care by Doctors and Nurses', [
+        feedbackData.timelyCare.excellent,
+        feedbackData.timelyCare.veryGood,
+        feedbackData.timelyCare.good,
+        feedbackData.timelyCare.satisfactory,
+        feedbackData.timelyCare.poor
+        ]);
+
+        createBarChart('conductChart', 'Conduct of Doctors and Nurses', [
+        feedbackData.conductNursesDoctors.excellent,
+        feedbackData.conductNursesDoctors.veryGood,
+        feedbackData.conductNursesDoctors.good,
+        feedbackData.conductNursesDoctors.satisfactory,
+        feedbackData.conductNursesDoctors.poor
+        ]);
+
+        createBarChart('testingFacilitiesChart', 'Availability of Testing Facilities', [
+        feedbackData.testingFacilities.excellent,
+        feedbackData.testingFacilities.veryGood,
+        feedbackData.testingFacilities.good,
+        feedbackData.testingFacilities.satisfactory,
+        feedbackData.testingFacilities.poor
+        ]);
+
+        createBarChart('foodQualityChart', 'Timely Provision and Quality of Food', [
+        feedbackData.foodQuality.excellent,
+        feedbackData.foodQuality.veryGood,
+        feedbackData.foodQuality.good,
+        feedbackData.foodQuality.satisfactory,
+        feedbackData.foodQuality.poor
+        ]);
+
+        // Function to download the charts as a PDF
+        document.getElementById('downloadPdfBtn').addEventListener('click', function () {
+        const {
+        jsPDF
+        } = window.jspdf;
+        const doc = new jsPDF('p', 'mm', 'a4');
+
+        // Capture each chart as an image using html2canvas
+        const chartElements = document.querySelectorAll('canvas');
+        let promises = [];
+
+            chartElements.forEach((chart, index) => {
+            promises.push(html2canvas(chart).then(canvas => {
+            const imgData = canvas.toDataURL('image/png');
+            const imgWidth = 190;
+            const imgHeight = canvas.height * imgWidth / canvas.width;
+            if (index !== 0) {
+            doc.addPage();
+            }
+                    doc.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+                    }));
+                    });
+
+            Promise.all(promises).then(() => {
+            doc.save('feedback-charts.pdf');
+            });
+            });
+            </script>
+            </body>
+
+            </html>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Excel with Custom Headings</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
-    <div class='ripple-background'>
-        <div class='circle xxlarge shade1'></div>
-        <div class='circle xlarge shade2'></div>
-        <div class='circle large shade3'></div>
-        <div class='circle mediun shade4'></div>
-        <div class='circle small shade5'></div>
-    </div>
+    <button id="downloadBtn">Download Excel</button>
+
+    <script>
+        document.getElementById('downloadBtn').addEventListener('click', function () {
+            // Create dummy data with custom headings
+            const data = [{
+                    'Full Name': 'John Doe',
+                    'Age (Years)': 30,
+                    'Email Address': 'john@example.com'
+                },
+                {
+                    'Full Name': 'Jane Smith',
+                    'Age (Years)': 25,
+                    'Email Address': 'jane@example.com'
+                },
+                {
+                    'Full Name': 'Sam Johnson',
+                    'Age (Years)': 35,
+                    'Email Address': 'sam@example.com'
+                }
+            ];
+
+            // Convert data to worksheet
+            const ws = XLSX.utils.json_to_sheet(data, {
+                header: ['Full Name', 'Age (Years)', 'Email Address']
+            });
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+            // Create Excel file and trigger download
+            XLSX.writeFile(wb, 'dummy_data_with_custom_headings.xlsx');
+        });
+    </script>
 </body>
 </html>
