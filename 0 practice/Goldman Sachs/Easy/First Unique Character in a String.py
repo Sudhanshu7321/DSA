@@ -1,4 +1,4 @@
-s = "aabb"
+
 def solve1(s):
     dic = {}
     
@@ -23,4 +23,7 @@ def solve2(s):
            
     return -1
 
+
+s = "aabb"
+s = "loveleetcode"
 print(solve2(s))
